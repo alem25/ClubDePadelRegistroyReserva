@@ -135,8 +135,8 @@ export class BookingComponent implements OnInit {
         .set('Content-Type', 'application/json')
         .set('Authorization', 'Bearer ' + tokenKey);
       const body = {
-        courtid: +this.bookcourtid,
-        rsvdatetime: +date,
+        courtId: +this.bookcourtid,
+        rsvdateTime: +date,
       };
       return this.http.post(this.url, body, { headers, observe: 'response', responseType: 'json' })
         .subscribe(

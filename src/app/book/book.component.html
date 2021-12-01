@@ -20,9 +20,9 @@
                 <td>{{ i + 1 }}</td>
                 <td>{{reservation?.rsvId}}</td>
                 <td>{{reservation?.courtId}}</td>
-                <td>{{reservation?.rsvday}}</td>
+                <td>{{reservation?.rsvday | date: 'dd/MM/yyyy'}}</td>
                 <td>{{reservation?.rsvtime}}</td>
-                <td>{{reservation?.rsvdateTime | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+                <td>{{reservation?.rsvdateTime | date:'dd/MM/yyyy HH:mm:ss'}}</td>
                 <td><button (click)="openDialog(reservation?.rsvId)" class="btn btn-warning">Cancelar</button></td>
               </tr>
             </tbody>

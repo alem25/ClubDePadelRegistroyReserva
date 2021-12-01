@@ -13,7 +13,6 @@ import {environment} from '../../environments/environment';
 })
 export class NavBarLoggedComponent implements OnInit {
 
-  usernameLogged;
   usernameNiceName;
 
   constructor(private http: HttpClient, private router: Router, private dialog: MatDialog,
@@ -33,7 +32,7 @@ export class NavBarLoggedComponent implements OnInit {
   }
 
   deleteAccount() {
-    const url = this.url + '/' + this.usernameLogged;
+    const url = this.url + '/' + this.getLoggedUser();
     const tokenKey = this.token.getToken();
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
@@ -78,7 +77,11 @@ export class NavBarLoggedComponent implements OnInit {
 
   obtainUserLogged() {
     const decoded = JSON.parse(atob(this.token.getToken().split('.')[1]));
-    this.usernameLogged = decoded !== undefined ? decoded.username : '';
-    this.usernameNiceName = decoded !== undefined ? 'Mi cuenta: ' + decoded.username : '';
+    this.usernameNiceName = decoded !== undefined ? 'Mi cuenta: ' + decoded.user : '';
+  }
+
+  getLoggedUser() {
+    const decoded = JSON.parse(atob(this.token.getToken().split('.')[1]))
+    return decoded !== undefined ? decoded.user : '';
   }
 }

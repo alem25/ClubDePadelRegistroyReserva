@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
-import {colors} from '@angular/cli/utilities/color';
 import {environment} from '../../environments/environment';
 
 @Component({
