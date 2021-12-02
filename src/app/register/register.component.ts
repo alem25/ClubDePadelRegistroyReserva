@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
@@ -13,22 +13,27 @@ export class RegisterComponent implements OnInit {
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar, private router: Router) { }
 
-  private url: string = environment.url + 'users';
-  public nombre;
-  public email1;
-  public clave1;
-  public fecha;
-  public phone;
-  public alreadyExists = true;
+  url: string = environment.url + 'users'
+  nombre: string | undefined
+  email1: string | undefined
+  clave1: string | undefined
+  fecha: string | undefined
+  phone: string | undefined
+  alreadyExists = true
+  min = new Date(1900, 1, 1)
+  max = new Date()
 
-  CheckIfExists() {
+  ngOnInit() {
+  }
+  
+  checkIfExists() {
     if (this.nombre !== null && this.nombre.length > 2) {
       const urlCheck = this.url + '/' + this.nombre;
       return this.http.get(urlCheck, { observe: 'response'}).toPromise().then(
         response => {
           switch (response.status) {
             case 200:
-              this.alreadyExists = true;
+              this.alreadyExists = true
               this.snackBar.open('Este nombre de usuario ya existe', 'Cerrar',
                 { duration: 10000, verticalPosition: 'top', panelClass: ['danger-snackbar'] });
               break;
@@ -38,11 +43,12 @@ export class RegisterComponent implements OnInit {
         }).catch( (error) => {
         switch (error.status) {
           case 404:
-            this.alreadyExists = false;
+            this.alreadyExists = false
             this.snackBar.open('Usuario válido', 'Cerrar',
               { duration: 10000, verticalPosition: 'top', panelClass: ['success-snackbar'] });
             break;
           case 500:
+            this.alreadyExists = true
             this.snackBar.open('Error interno', 'Cerrar',
               { duration: 10000, verticalPosition: 'top', panelClass: ['danger-snackbar'] });
             break;
@@ -53,7 +59,14 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  Register() {
+  isDisabled(miform: any) {
+    let fn = new Date(this.fecha)
+    if (fn < this.min || fn > this.max)
+      return true
+    return miform !== undefined && miform.valid === false || this.alreadyExists === true
+  }
+
+  register() {
     const date = this.fecha !== undefined ? new Date(this.fecha).getTime() : undefined;
     const body = {
       username: this.nombre,
@@ -92,8 +105,4 @@ export class RegisterComponent implements OnInit {
         }
       });
   }
-
-  ngOnInit() {
-  }
-
 }

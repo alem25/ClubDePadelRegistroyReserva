@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DialogComponent implements OnInit {
 
-  public action = '';
+  action = ''
 
   constructor() { }
 

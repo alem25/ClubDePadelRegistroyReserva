@@ -12,6 +12,10 @@ export class AppComponent implements OnInit {
   constructor(private token: TokenService) {
   }
 
+  isAuthorized() {
+    return this.token.isAuthorized()
+  }
+
   ngOnInit() {
   }
 }

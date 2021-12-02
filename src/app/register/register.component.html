@@ -9,7 +9,7 @@
           <div class="form-group">
             <label class="text-light col-10 pl-0" for="nombre">Usuario:</label>
             <input class="form-control col-10" id="nombre" name="nombre" placeholder="Nombre de usuario" type="text"
-                   required (input)='nombre = nombreval.value' (keyup)="CheckIfExists()" ngModel #nombreval='ngModel' minlength='3' >
+                   required (input)='nombre = nombreval.value' (keyup)="checkIfExists()" ngModel #nombreval='ngModel' minlength='3' >
             <div class="my-1 py-1 alert-danger col-10" *ngIf="nombreval.touched && !nombreval.valid">
               <div *ngIf="nombreval.errors.required">Nombre requerido</div>
               <div *ngIf="nombreval.errors.minlength">Longitud debe ser mayor o igual a {{ nombreval.errors.minlength.requiredLength }} caracteres</div>
@@ -47,7 +47,8 @@
           </div>
           <div class="form-group">
             <label class="text-light col-10 pl-0" for="fecha">Fecha de nacimiento:</label>
-            <input class="form-control col-10" id="fecha" type="date" name="fecha" #fecha1='ngModel'
+            <input class="form-control col-10" id="fecha" min="{{min | date: 'yyyy-MM-dd'}}"
+            max="{{max | date: 'yyyy-MM-dd'}}" type="date" name="fecha" #fecha1='ngModel'
             ngModel (input)="fecha = fecha1?.value">
           </div>
           <div class="form-group">
@@ -72,7 +73,7 @@
               Debes aceptar los términos y condiciones
             </div>
           </div>
-          <button type="submit" class="btn btn-primary" (click)="Register()" [disabled]="!register_form.valid || alreadyExists === true">Enviar</button>
+          <button type="submit" class="btn btn-primary" (click)="register()" [disabled]="isDisabled(this.register_form)">Enviar</button>
         </div>
       </div>
     </form>

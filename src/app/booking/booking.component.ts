@@ -15,41 +15,42 @@ import {environment} from '../../environments/environment';
 })
 export class BookingComponent implements OnInit {
 
-  min: Date;
-  max: Date;
-  date: string | undefined;
-  reservations: Reservation[] = [];
-  availables: Reservation[] = [];
-  bookcourtid: string;
-  bookrsvtime: string;
+  min = new Date()
+  max = new Date()
+  reservations: Reservation[] = []
+  availables: Reservation[] = []
+  bookcourtid: string
+  bookrsvtime: string
+  date: string | undefined
+  url = environment.url + 'reservations'
 
   constructor(private http: HttpClient, private router: Router, private snackbar: MatSnackBar,
               private dialog: MatDialog, private token: TokenService) { }
-  private url: string = environment.url + 'reservations';
 
   ngOnInit() {
     this.token.guardian();
-    this.min = new Date();
-    this.max = new Date();
     this.max.setFullYear(this.max.getFullYear() + 1);
   }
 
   getAvailableByDay() {
-    this.reservations = [];
-    this.availables = [];
-    this.getAllPossibleCombinationsByDay();
-    this.getReservationsByDay().then( () =>
-      this.reservations.map( r => {
-        this.availables.map( a => {
-          if (r.rsvtime === a.rsvtime && r.courtId === a.courtId) {
-            this.availables.splice(this.availables.indexOf(a), 1);
-          }
-        });
-      })).catch( () => {
-        this.snackbar.open('Error interno', 'Cerrar',
-          { duration: 5000, verticalPosition: 'top', panelClass: ['danger-snackbar'] });
-      }
-    );
+    this.reservations = []
+    this.availables = []
+    let fn = new Date(this.date)
+    if (fn > this.min && fn < this.max) {
+      this.getAllPossibleCombinationsByDay();
+      this.getReservationsByDay().then( () =>
+        this.reservations.map( r => {
+          this.availables.map( a => {
+            if (r.rsvtime === a.rsvtime && r.courtId === a.courtId) {
+              this.availables.splice(this.availables.indexOf(a), 1);
+            }
+          });
+        })).catch( () => {
+          this.snackbar.open('Error interno', 'Cerrar',
+            { duration: 5000, verticalPosition: 'top', panelClass: ['danger-snackbar'] });
+        }
+      )
+    }
   }
 
   getReservationsByDay() {

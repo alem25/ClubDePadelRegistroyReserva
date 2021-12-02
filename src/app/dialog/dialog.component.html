@@ -3,6 +3,6 @@
   <p>¿Estás seguro que deseas {{action}}?</p>
 </div>
 <div mat-dialog-actions>
-  <button class="btn btn-dark" mat-button [matDialogClose]="onNoClick()">Cancelar</button>
-  <button class="btn btn-dark" mat-button [matDialogClose]="onYesClick()">Aceptar</button>
+  <button mat-raised-button [matDialogClose]="onNoClick()">Cancelar</button>
+  <button mat-raised-button [matDialogClose]="onYesClick()">Aceptar</button>
 </div>
